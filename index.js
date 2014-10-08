@@ -5,7 +5,7 @@ var http = require('http'),
     app = koa(),
     mount = require('koa-mount'),
     cors = require('koa-cors'),
-    request = require('koa-request'),
+    request = require('request'),
     Router = require('koa-router');
 
 app.use(cors());
@@ -21,14 +21,7 @@ var url = function() {
     url.get('/', function * (next) {
 
         if (this.query && this.query.redirect) {
-            var options = {
-                url: this.query.redirect,
-                headers: {
-                    'User-Agent': 'request'
-                }
-            }
-            var res = yield request(options);
-            this.body = res.body;
+            this.body = request(this.query.redirect);
         } else
             this.body = {}
         yield next;
