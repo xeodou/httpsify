@@ -21,7 +21,13 @@ var url = function() {
     url.get('/', function * (next) {
 
         if (this.query && this.query.redirect) {
-            this.body = request(this.query.redirect);
+            var options = {
+                url: this.query.redirect,
+                headers: {
+                    'User-Agent': 'request'
+                }
+            }
+            this.body = request(options);
         } else
             this.body = {}
         yield next;
