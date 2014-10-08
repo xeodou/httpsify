@@ -6,7 +6,7 @@ var http = require('http'),
     app = koa(),
     mount = require('koa-mount'),
     cors = require('koa-cors'),
-    request = require('request'),
+    request = require('koa-request'),
     Router = require('koa-router');
 
 app.use(cors());
@@ -28,33 +28,17 @@ var url = function() {
                     'User-Agent': 'request'
                 }
             }
-            if (this.query.type)
-                this.set('Content-Type', this.query.type);
-            this.body = request(options)
-                .pipe(through2(function(chunk, enc, cb) {
-                    if (chunk) {
-                        if (self.query.decodeuri) {
-                            var str = chunk.toString();
-                            try {
-                                this.push(decodeURIComponent(str));
-                            } catch (err) {
-                                this.push(chunk);
-                            }
-                        } else
-                            this.push(chunk);
-                    }
-                    cb();
-                }))
-                .pipe(through2(function(chunk, enc, cb) {
-                    if (self.query.replace && self.query.from && self.query.to) {
-                        var str = chunk.toString();
-                        str = str.replace(new RegExp(self.query.from, 'g'), self.query.to);
-                        this.push(str);
-                    } else {
-                        this.push(chunk)
-                    }
-                    cb();
-                }));
+            var res = yield request(options);
+            self.type = res.headers['content-type'];
+            var body = res.body;
+            if (self.query.decodeuri) {
+                body = decodeURIComponent(body)
+            }
+            if (self.query.replace && self.query.from && self.query.to) {
+                body = body.replace(new RegExp(self.query.from, 'g'), self.query.to);
+            }
+            self.body = body;
+
         } else
             this.body = {}
         yield next;
