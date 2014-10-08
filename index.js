@@ -1,13 +1,14 @@
 var debug = require('debug')('redirectly:index');
 
 var http = require('http'),
-    through2 = require('through2'),
     koa = require('koa'),
     app = koa(),
     mount = require('koa-mount'),
     cors = require('koa-cors'),
+    _request = require('request'),
     request = require('koa-request'),
-    Router = require('koa-router');
+    Router = require('koa-router'),
+    UglifyJS = require('uglify-js');
 
 app.use(cors());
 
@@ -20,7 +21,7 @@ var url = function() {
 
     var url = new Router()
     url.get('/', function * (next) {
-        var self = this;
+        var body = {}
         if (this.query && this.query.redirect) {
             var options = {
                 url: this.query.redirect,
@@ -28,21 +29,25 @@ var url = function() {
                     'User-Agent': 'request'
                 }
             }
-            var res = yield request(options);
-            self.type = res.headers['content-type'];
-            var body = res.body;
-            if (self.query.decodeuri) {
-                body = decodeURIComponent(body)
-            }
-            if (self.query.replace && self.query.from && self.query.to) {
-                body = body.replace(new RegExp(self.query.from, 'g'), self.query.to);
-            }
-            self.body = body;
-
-        } else
-            this.body = {}
+            if (this.query.minify) {
+                var res = yield request(options);
+                this.type = res.headers['content-type'];
+                body = res.body;
+                if (this.query.decodeuri) {
+                    body = decodeURIComponent(body)
+                    console.log(body)
+                }
+                if (this.query.replace && this.query.from && this.query.to) {
+                    body = body.replace(new RegExp(this.query.from, 'g'), this.query.to);
+                }
+                body = UglifyJS.minify(body, {
+                    fromString: true
+                }).code;
+            } else
+                body = _request(options);
+        }
+        this.body = body
         yield next;
-
     })
     return url.middleware();
 }
