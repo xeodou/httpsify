@@ -5,24 +5,34 @@ var http = require('http'),
     app = koa(),
     mount = require('koa-mount'),
     cors = require('koa-cors'),
+    request = require('koa-request'),
     Router = require('koa-router');
 
 app.use(cors());
 
-app.use(function *(next) {
+app.use(function * (next) {
     this.body = 'Hello Heroku';
     yield next;
 });
 
-var url = function (){
+var url = function() {
 
     var url = new Router()
-    url.get('/', function *(next) {
-        if(this.query && this.query.redirect)
-            this.redirect(this.query.redirect)
-        else
+    url.get('/', function * (next) {
+
+        if (this.query && this.query.redirect) {
+            var options = {
+                url: this.query.redirect,
+                headers: {
+                    'User-Agent': 'request'
+                }
+            }
+            var res = yield request(options);
+            this.body = res.body;
+        } else
             this.body = {}
         yield next;
+
     })
     return url.middleware();
 }
