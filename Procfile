@@ -1,0 +1,1 @@
+redirectly: npm --harmony start
