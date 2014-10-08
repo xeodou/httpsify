@@ -32,10 +32,18 @@ var url = function() {
             if (this.query.type)
                 this.set('Content-Type', this.query.type);
             this.body = request(options)
-                .pipe(split())
                 .pipe(through2(function(chunk, enc, cb) {
-                    if (chunk)
-                        this.push(self.query.decodeuri ? decodeURIComponent(chunk.toString()) : chunk);
+                    if (chunk) {
+                        if (self.query.decodeuri) {
+                            var str = chunk.toString();
+                            try {
+                                this.push(decodeURIComponent(str));
+                            } catch (err) {
+                                this.push(chunk);
+                            }
+                        } else
+                            this.push(chunk);
+                    }
                     cb();
                 }))
                 .pipe(through2(function(chunk, enc, cb) {
