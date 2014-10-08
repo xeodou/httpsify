@@ -4,6 +4,7 @@ var http = require('http'),
     koa = require('koa'),
     app = koa(),
     mount = require('koa-mount'),
+    cors = require('koa-cors'),
     Router = require('koa-router');
 
 app.use(cors());
