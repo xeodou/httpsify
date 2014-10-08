@@ -1,6 +1,8 @@
 var debug = require('debug')('redirectly:index');
 
 var http = require('http'),
+    through2 = require('through2'),
+    split = require('split'),
     koa = require('koa'),
     app = koa(),
     mount = require('koa-mount'),
@@ -19,7 +21,7 @@ var url = function() {
 
     var url = new Router()
     url.get('/', function * (next) {
-
+        var self = this;
         if (this.query && this.query.redirect) {
             var options = {
                 url: this.query.redirect,
@@ -27,7 +29,23 @@ var url = function() {
                     'User-Agent': 'request'
                 }
             }
-            this.body = request(options);
+            this.body = request(options)
+                .pipe(split())
+                .pipe(through2(function(chunk, enc, cb) {
+                    if(chunk)
+                        this.push(self.query.decodeuri ? decodeURIComponent(chunk.toString()) : chunk);
+                    cb();
+                }))
+                .pipe(through2(function(chunk, enc, cb) {
+                    var str = chunk.toString();
+                    if (str) {
+                        if (self.query.replace && self.query.from && self.query.to) {
+                            str = str.replace(new RegExp(self.query.from, 'g'), self.query.to);
+                        }
+                        this.push(str);
+                    }
+                    cb();
+                }));
         } else
             this.body = {}
         yield next;
