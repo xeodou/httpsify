@@ -29,6 +29,7 @@ var url = function() {
                     'User-Agent': 'request'
                 }
             }
+            this.set('Content-Type', this.query.type || 'application/javascript');
             this.body = request(options)
                 .pipe(split())
                 .pipe(through2(function(chunk, enc, cb) {
