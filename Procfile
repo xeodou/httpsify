@@ -1,1 +1,1 @@
-redirectly: npm --harmony index.js
+redirectly: node --harmony index.js
