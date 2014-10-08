@@ -9,6 +9,6 @@ app.use(function *(next) {
     yield next;
 });
 
-http.createServer(app.callback()).listen(3000, function() {
-    debug('listening port %s', 3000)
+http.createServer(app.callback()).listen(process.env.PORT, function() {
+    debug('listening port %s', process.env.PORT)
 });
