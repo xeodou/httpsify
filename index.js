@@ -2,7 +2,6 @@ var debug = require('debug')('redirectly:index');
 
 var http = require('http'),
     through2 = require('through2'),
-    split = require('split'),
     koa = require('koa'),
     app = koa(),
     mount = require('koa-mount'),
