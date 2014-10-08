@@ -29,21 +29,22 @@ var url = function() {
                     'User-Agent': 'request'
                 }
             }
-            this.set('Content-Type', this.query.type || 'application/javascript');
+            if (this.query.type)
+                this.set('Content-Type', this.query.type);
             this.body = request(options)
                 .pipe(split())
                 .pipe(through2(function(chunk, enc, cb) {
-                    if(chunk)
+                    if (chunk)
                         this.push(self.query.decodeuri ? decodeURIComponent(chunk.toString()) : chunk);
                     cb();
                 }))
                 .pipe(through2(function(chunk, enc, cb) {
-                    var str = chunk.toString();
-                    if (str) {
-                        if (self.query.replace && self.query.from && self.query.to) {
-                            str = str.replace(new RegExp(self.query.from, 'g'), self.query.to);
-                        }
+                    if (self.query.replace && self.query.from && self.query.to) {
+                        var str = chunk.toString();
+                        str = str.replace(new RegExp(self.query.from, 'g'), self.query.to);
                         this.push(str);
+                    } else {
+                        this.push(chunk)
                     }
                     cb();
                 }));
