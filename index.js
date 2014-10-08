@@ -6,6 +6,8 @@ var http = require('http'),
     mount = require('koa-mount'),
     Router = require('koa-router');
 
+app.use(cors());
+
 app.use(function *(next) {
     this.body = 'Hello Heroku';
     yield next;
