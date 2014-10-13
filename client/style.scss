@@ -1,0 +1,108 @@
+$green: #2ecc71;
+$red: #d35400;
+$black: #2D3036;
+$white: #ecf0f1;
+$headers: #EFF5FE;
+$grey: #ABB6C6;
+
+/* Eggshell */
+
+@import 'eggshell';
+
+/* Layout */
+
+$width: 700px;
+
+#main{
+  margin: 0 auto;
+  max-width: $width;
+  width: 90%;
+  padding-top: 20px;
+}
+
+/* General */
+
+body {
+  background: $green;
+  color: $green;
+  @include font-size($larger);
+  position: relative;
+  text-align: center;
+  a {
+    color: $white;
+  }
+}
+
+#header {
+  left: 0;
+  padding: $gutter * 2;
+  // position: absolute;
+  right: 0;
+  text-align: left;
+  top: 0;
+  vertical-align: middle;
+  a {
+    border-radius: $radius;
+    border: 1px solid transparent;
+    border-color: #27ae60;
+    padding: $gutter/2;
+    &:hover {
+      color: #FFF;
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+      color: $white;
+  }
+}
+
+#footer {
+  clear: both;
+  color: $white;
+  @include font-size($small);
+  position: fixed;
+  bottom: $gutter;
+  width: 100%;
+  margin: 0 auto;
+
+  a {
+    border-bottom: 1px solid tint($white, 10%);
+    color: #27ae60;
+    &:hover {
+      color: #FFF;
+      text-decoration: none;
+    }
+  }
+}
+
+
+.container {
+  margin-top: $gutter * 2;
+  p {
+    @include font-size($larger);
+    color: $white;
+  }
+  .input {
+    input {
+      width: 80%;
+      display: block;
+      margin: 0 auto;
+    }
+    div {
+      margin-top: $gutter*2;
+    }
+    button {
+      margin-top: $gutter;
+      border-radius: $radius;
+      font-size: 1.6rem;
+      border: 1px solid transparent;
+      border-color: #27ae60;
+      padding: $gutter/2 25% ;
+      color: $white;
+    }
+  }
+}

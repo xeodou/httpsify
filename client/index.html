@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang='en'>
+<head>
+ <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1'/>
+
+  <title>httpsify</title>
+
+  <meta name='keywords' content='redirectly, redirect, https, forwarding, http, ssl'/>
+  <meta name='description' content='Simple app use http url to redirect a https url.'/>
+
+  <link rel='stylesheet' href='style.css'>
+
+</head>
+<body>
+    <header id='header'>
+        <a href='/'>Httpsify</a>
+    </header>
+
+    <div id='main'>
+        <div class='container'>
+            <p>Simple app used to covert http content to https.</p>
+            <div class='input'>
+                <input placeholder='Input a url' type='text' onKeydown='Javascript: if (event.keyCode==13) urlClick()'/>
+                <div>
+                    <button onClick='urlClick()'>Have Fun</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id='footer'>
+        Build by <a href='https://github.com/xeodou' target='_blank'>Xeodou</a>, see code <a href='https://github.com/xeodou/httpsify' target='_blank'>Github</a>
+    </footer>
+</body>
+<script type="text/javascript">
+
+    function urlClick() {
+        window.open('https://httpsify.xeodou.me/url?redirect=' + document.getElementsByTagName('input')[0].value, '_blank')
+    }
+
+</script>
+</html>
