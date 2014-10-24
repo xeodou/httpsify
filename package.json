@@ -1,6 +1,6 @@
 {
   "name": "redirectly",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple app use http url to redirect a https url.",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "url": "git@github.com:xeodou/redirectly.git"
   },
   "keywords": [
+    "httpsify",
     "redirectly",
     "redirect",
     "https",
@@ -37,9 +38,7 @@
     "koa-request": "^1.0.0",
     "koa-router": "^3.4.0",
     "koa-static": "^1.4.7",
-    "request": "^2.45.0",
-    "through2": "^0.6.2",
-    "uglify-js": "^2.4.15"
+    "minify": "git://github.com/ianstormtaylor/minify"
   },
   "devDependencies": {
     "eggshell": "^0.1.22",
