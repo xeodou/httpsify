@@ -1,6 +1,6 @@
 {
   "name": "redirectly",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple app use http url to redirect a https url.",
   "main": "index.js",
   "scripts": {
