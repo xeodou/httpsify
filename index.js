@@ -8,9 +8,11 @@ var http = require('http'),
     serve = require('koa-static'),
     request = require('koa-request'),
     Router = require('koa-router'),
+    gzip = require('koa-gzip'),
     minify = require('minify');
 
 
+app.use(gzip());
 app.use(cors());
 
 app.use(serve('client'));
